@@ -67,7 +67,7 @@ class Builder:
             links.append(
                 self.link.format(
                     href=photo.href,
-                    thumb_src=photo.thumb_src,
+                    thumb_src=f"/{photo.thumb_src}",
                     alt=photo.alt,
                 )
             )
