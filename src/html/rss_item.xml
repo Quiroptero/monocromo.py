@@ -1,0 +1,7 @@
+        <item>
+            <link>{permalink}</link>
+            <title>{alt}</title>
+            <pubDate>{alt}</pubDate>
+            <guid>{permalink}</guid>
+            <description><![CDATA[<img src="{url}{src}" />]]></description>
+        </item>
