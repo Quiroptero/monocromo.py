@@ -75,13 +75,14 @@ class Photo:
         # Convert command
         s = Path(src, "images", self.filename)
         d = Path(dst, self.thumb_src)
-        opts_1 = "jpeg:size=100x65"
-        opts_2 = "-thumbnail 100x65^ -gravity center -extent 100x65"
-        c = f"convert -define {opts_1} {s} {opts_2} {d}".format(opts_1=opts_1, opts_2=opts_2, s=s, d=d)
-        os.system(command=c)
-        # Mogrify command
-        c = f"mogrify -unsharp 0.25x0.08+8.3+0.045 {d}".format(d=d)
-        os.system(command=c)
+        if not d.exists():
+            opts_1 = "jpeg:size=100x65"
+            opts_2 = "-thumbnail 100x65^ -gravity center -extent 100x65"
+            c = f"convert -define {opts_1} {s} {opts_2} {d}".format(opts_1=opts_1, opts_2=opts_2, s=s, d=d)
+            os.system(command=c)
+            # Mogrify command
+            c = f"mogrify -unsharp 0.25x0.08+8.3+0.045 {d}".format(d=d)
+            os.system(command=c)
 
     def generate_sizes(self, src: Path, dst: Path):
         Path(dst, self.src_prefix).mkdir(parents=True, exist_ok=True)  # Make sure target dir exists
@@ -89,5 +90,6 @@ class Photo:
         d = Path(dst, self.src_prefix)
         for size in self.sizes:
             target = Path(d, f"{size}_{self.filename}")
-            os.system(command=f"convert -resize {size}x -quality 100 {s} {target}")
-            os.system(command=f"mogrify -unsharp 0.25x0.08+8.3+0.045 {target}")
+            if not target.exists():
+                os.system(command=f"convert -resize {size}x -quality 100 {s} {target}")
+                os.system(command=f"mogrify -unsharp 0.25x0.08+8.3+0.045 {target}")
